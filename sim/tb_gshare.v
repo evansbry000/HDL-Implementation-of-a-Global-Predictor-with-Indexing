@@ -27,6 +27,7 @@ module tb_gshare();
     integer scan_file;
     integer num_branches;
     integer num_mispredictions;
+    integer file_status;
     
     // Testbench execution
     initial begin
@@ -81,9 +82,6 @@ module tb_gshare();
         $finish;
     end
     
-    // Save waveform data
-    initial begin
-        $dumpfile("gshare.vcd");
-        $dumpvars(0, tb_gshare);
-    end
+    // For Vivado waveform viewing, use GUI to add signals
+    // No need for $dumpfile/$dumpvars statements
 endmodule
