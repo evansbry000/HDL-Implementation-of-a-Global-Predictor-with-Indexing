@@ -1,0 +1,81 @@
+#-----------------------------------------------------------
+# Vivado v2023.1.1 (64-bit)
+# SW Build 3900603 on Fri Jun 16 19:31:24 MDT 2023
+# IP Build 3900379 on Sat Jun 17 05:28:05 MDT 2023
+# SharedData Build 3899622 on Fri Jun 16 03:34:24 MDT 2023
+# Start of session at: Sat May 10 14:48:38 2025
+# Process ID: 12936
+# Current directory: C:/Users/pjack/branchers
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent12888 C:\Users\pjack\branchers\branchers.xpr
+# Log file: C:/Users/pjack/branchers/vivado.log
+# Journal file: C:/Users/pjack/branchers\vivado.jou
+# Running On: DESKTOP-DVFT23P, OS: Windows, CPU Frequency: 3792 MHz, CPU Physical cores: 8, Host memory: 17066 MB
+#-----------------------------------------------------------
+start_gui
+open_project C:/Users/pjack/branchers/branchers.xpr
+update_compile_order -fileset sources_1
+launch_simulation
+launch_simulation
+launch_simulation
+source tb_gpredict.tcl
+close_sim
+launch_simulation
+source tb_gpredict.tcl
+close_sim
+launch_simulation
+source tb_gpredict.tcl
+set_property -name {xsim.simulate.runtime} -value {1s} -objects [get_filesets sim_1]
+close_sim
+launch_simulation
+source tb_gpredict.tcl
+close_sim
+# Disabling source management mode.  This is to allow the top design properties to be set without GUI intervention.
+set_property source_mgmt_mode None [current_project]
+set_property top tb_gselect [get_filesets sim_1]
+set_property top_lib xil_defaultlib [get_filesets sim_1]
+# Re-enabling previously disabled source management mode.
+set_property source_mgmt_mode All [current_project]
+# Disabling source management mode.  This is to allow the top design properties to be set without GUI intervention.
+set_property source_mgmt_mode None [current_project]
+set_property top gselect [current_fileset]
+# Re-enabling previously disabled source management mode.
+set_property source_mgmt_mode All [current_project]
+update_compile_order -fileset sim_1
+update_compile_order -fileset sources_1
+launch_simulation
+source tb_gselect.tcl
+# Disabling source management mode.  This is to allow the top design properties to be set without GUI intervention.
+set_property source_mgmt_mode None [current_project]
+set_property top gshare [current_fileset]
+# Re-enabling previously disabled source management mode.
+set_property source_mgmt_mode All [current_project]
+update_compile_order -fileset sources_1
+# Disabling source management mode.  This is to allow the top design properties to be set without GUI intervention.
+set_property source_mgmt_mode None [current_project]
+set_property top tb_gshare [get_filesets sim_1]
+set_property top_lib xil_defaultlib [get_filesets sim_1]
+# Re-enabling previously disabled source management mode.
+set_property source_mgmt_mode All [current_project]
+update_compile_order -fileset sim_1
+close_sim
+launch_simulation
+source tb_gshare.tcl
+close_sim
+close_project
+open_project C:/Users/pjack/branchers/branchers.xpr
+update_compile_order -fileset sources_1
+launch_simulation
+launch_simulation
+source tb_gpredict.tcl
+close_sim
+launch_simulation
+source tb_gpredict.tcl
+close_sim
+launch_simulation
+source tb_gpredict.tcl
+close_sim
+close_project
+open_project C:/Users/pjack/branchers/branchers.xpr
+update_compile_order -fileset sources_1
+update_compile_order -fileset sim_1
+update_compile_order -fileset sim_1

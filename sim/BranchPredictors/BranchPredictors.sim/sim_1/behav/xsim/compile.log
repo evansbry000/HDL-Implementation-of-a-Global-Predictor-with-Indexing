@@ -1,0 +1,16 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/pjack/AppData/Roaming/SPB_Data/HDL-Implementation-of-a-Global-Predictor-with-Indexing/src/Shared Components/PredictionDecoder.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module prediction_decoder
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/pjack/AppData/Roaming/SPB_Data/HDL-Implementation-of-a-Global-Predictor-with-Indexing/src/Shared Components/SaturatingCounterUpdater.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module saturating_counter_updater
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/pjack/AppData/Roaming/SPB_Data/HDL-Implementation-of-a-Global-Predictor-with-Indexing/src/Shared Components/bht.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module bht
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/pjack/AppData/Roaming/SPB_Data/HDL-Implementation-of-a-Global-Predictor-with-Indexing/src/Shared Components/ghr.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module ghr
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/pjack/AppData/Roaming/SPB_Data/HDL-Implementation-of-a-Global-Predictor-with-Indexing/src/gpredict.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module gpredict
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/pjack/AppData/Roaming/SPB_Data/HDL-Implementation-of-a-Global-Predictor-with-Indexing/src/gpredict_index.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module gpredict_index
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/pjack/AppData/Roaming/SPB_Data/HDL-Implementation-of-a-Global-Predictor-with-Indexing/sim/tb_gpredict.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module tb_gpredict
+INFO: [VRFC 10-2263] Analyzing Verilog file "C:/Users/pjack/AppData/Roaming/SPB_Data/HDL-Implementation-of-a-Global-Predictor-with-Indexing/sim/BranchPredictors/BranchPredictors.sim/sim_1/behav/xsim/glbl.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module glbl

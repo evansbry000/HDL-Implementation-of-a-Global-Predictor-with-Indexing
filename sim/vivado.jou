@@ -1,0 +1,14 @@
+#-----------------------------------------------------------
+# Vivado v2023.1.1 (64-bit)
+# SW Build 3900603 on Fri Jun 16 19:31:24 MDT 2023
+# IP Build 3900379 on Sat Jun 17 05:28:05 MDT 2023
+# SharedData Build 3899622 on Fri Jun 16 03:34:24 MDT 2023
+# Start of session at: Sat May 10 14:57:55 2025
+# Process ID: 13428
+# Current directory: C:/Users/pjack/AppData/Roaming/SPB_Data/HDL-Implementation-of-a-Global-Predictor-with-Indexing/sim
+# Command line: vivado.exe -mode tcl -source run_vivado_sim.tcl
+# Log file: C:/Users/pjack/AppData/Roaming/SPB_Data/HDL-Implementation-of-a-Global-Predictor-with-Indexing/sim/vivado.log
+# Journal file: C:/Users/pjack/AppData/Roaming/SPB_Data/HDL-Implementation-of-a-Global-Predictor-with-Indexing/sim\vivado.jou
+# Running On: DESKTOP-DVFT23P, OS: Windows, CPU Frequency: 3792 MHz, CPU Physical cores: 8, Host memory: 17066 MB
+#-----------------------------------------------------------
+source run_vivado_sim.tcl

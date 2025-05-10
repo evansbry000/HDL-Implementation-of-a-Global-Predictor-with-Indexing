@@ -1,0 +1,19 @@
+Time resolution is 1 ps
+Misprediction at PC= 25: predicted=0, actual=1
+Misprediction at PC= 33: predicted=0, actual=1
+Misprediction at PC= 33: predicted=0, actual=1
+Misprediction at PC= 33: predicted=0, actual=1
+Misprediction at PC= 33: predicted=0, actual=1
+Misprediction at PC= 25: predicted=0, actual=1
+Misprediction at PC= 33: predicted=0, actual=1
+Misprediction at PC= 33: predicted=0, actual=1
+Misprediction at PC= 25: predicted=0, actual=1
+Misprediction at PC= 33: predicted=0, actual=1
+Misprediction at PC= 33: predicted=0, actual=1
+Misprediction at PC= 33: predicted=0, actual=1
+
+GSHARE Results:
+Total branches:        7000
+Mispredictions:          12
+Accuracy: 99.83%
+$finish called at time : 70025 ns : File "C:/Users/pjack/branchers/branchers.srcs/sim_1/imports/HDL-Implementation-of-a-Global-Predictor-with-Indexing/sim/tb_gshare.v" Line 83

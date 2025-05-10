@@ -1,0 +1,6 @@
+Vivado Simulator v2023.1.1
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+Copyright 2022-2023 Advanced Micro Devices, Inc. All Rights Reserved.
+Running: C:/Xilinx/Vivado/2023.1/bin/unwrapped/win64.o/xelab.exe --incr --debug typical --relax --mt 2 -generic_top TRACE_FILE_PATH=./branch_trace.txt -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot tb_gpredict_behav xil_defaultlib.tb_gpredict xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+ERROR: [XSIM 43-3281] Parameter/Generic TRACE_FILE_PATH  specified in commandline not found in design.

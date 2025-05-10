@@ -1,0 +1,1 @@
+--incr --debug "typical" --relax --mt "2" -generic_top "TRACE_FILE_PATH=C:/Users/pjack/branchers/branch_trace.txt" -L "xil_defaultlib" -L "unisims_ver" -L "unimacro_ver" -L "secureip" --snapshot "tb_gshare_behav" "xil_defaultlib.tb_gshare" "xil_defaultlib.glbl" -log "elaborate.log" 

@@ -1,66 +1,67 @@
-# run_sim.tcl - ModelSim TCL script for simulating branch predictors
+# run_sim_vivado.tcl - Xilinx Vivado-Compatible Simulation Script
 
-# Create work library
-if {[file exists work]} {
-    vdel -all
-}
-vlib work
+# Get absolute paths
+set script_dir [file normalize [file dirname [info script]]]
+set trace_path [file join $script_dir branch_trace.txt]
 
-# Generate branch trace if it doesn't exist
-if {![file exists branch_trace.txt]} {
-    puts "Generating branch trace using Python script..."
-    exec python loop_simulator.py
+# Generate branch trace
+if {![file exists $trace_path]} {
+    puts "Generating branch trace..."
+    exec python [file join $script_dir loop_simulator.py] -o $trace_path
 }
 
-# Compilation of source files
-puts "Compiling source files..."
-# Shared components
-vlog ../src/Shared\ Components/ghr.v
-vlog ../src/Shared\ Components/bht.v
-vlog ../src/Shared\ Components/PredictionDecoder.v
-vlog ../src/Shared\ Components/SaturatingCounter.v
-vlog ../src/Shared\ Components/SaturatingCounterUpdater.v
+# Create project
+create_project -force branch_predictor_sim ./branch_predictor_sim -part xc7a35tftg256-1
+set_property target_language Verilog [current_project]
 
-# Index generation modules
-vlog ../src/gpredict_index.v
-vlog ../src/gselect_index.v
-vlog ../src/gshare_index.v
+# Add design files
+add_files -norecurse {
+    ../src/Shared\ Components/ghr.v
+    ../src/Shared\ Components/bht.v
+    ../src/Shared\ Components/PredictionDecoder.v
+    ../src/Shared\ Components/SaturatingCounter.v
+    ../src/Shared\ Components/SaturatingCounterUpdater.v
+    ../src/gpredict_index.v
+    ../src/gselect_index.v
+    ../src/gshare_index.v
+    ../src/gpredict.v
+    ../src/gselect.v
+    ../src/gshare.v
+}
 
-# Predictor modules
-vlog ../src/gpredict.v
-vlog ../src/gselect.v
-vlog ../src/gshare.v
+# Add testbenches
+add_files -fileset sim_1 -norecurse {
+    tb_gpredict.v
+    tb_gselect.v
+    tb_gshare.v
+}
 
-# Testbenches
-vlog tb_gpredict.v
-vlog tb_gselect.v
-vlog tb_gshare.v
+# Set simulation properties
+set_property generic "TRACE_FILE_PATH=$trace_path" [get_filesets sim_1]
+update_compile_order -fileset sources_1
+update_compile_order -fileset sim_1
 
-# Run simulations and collect results
-puts "\n----- Running gpredict simulation -----"
-vsim -novopt tb_gpredict
-run -all
-
-puts "\n----- Running gselect simulation -----"
-vsim -novopt tb_gselect
-run -all
-
-puts "\n----- Running gshare simulation -----"
-vsim -novopt tb_gshare
-run -all
+# Run simulations
+foreach tb {tb_gpredict tb_gselect tb_gshare} {
+    puts "\n----- Running $tb simulation -----"
+    
+    # Reset simulation
+    close_sim -quiet
+    set_property top $tb [get_filesets sim_1]
+    launch_simulation -simset [get_filesets sim_1] -mode behavioral
+    
+    # Configure waveform viewing
+    if {[info exists view_waves] && $view_waves == 1} {
+        open_wave_config
+        add_wave_divider "Signals"
+        add_wave /$tb/dut/*
+    }
+    
+    # Run simulation
+    run all
+    flush stdout
+}
 
 puts "\n----- Simulation Complete -----"
-
-# Generate waveforms if requested
-if {[info exists view_waves] && $view_waves == 1} {
-    puts "Opening waveform viewer..."
-    vsim -novopt tb_gshare
-    add wave -position insertpoint sim:/tb_gshare/dut/*
-    run 200ns
-}
-
-# Display summary
-puts "\nSimulation Summary:"
-puts "Branch traces were read from branch_trace.txt"
-puts "Predictor performance numbers are shown above"
-puts "To view detailed waveforms, use: vsim -view gpredict.vcd (or gselect.vcd, gshare.vcd)"
+puts "Trace file used: $trace_path"
+puts "To view waveforms: open_wave_db [get_property DIRECTORY [get_runs sim_1]]/behav.wdb"
