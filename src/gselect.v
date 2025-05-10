@@ -9,9 +9,7 @@ module gselect (
 
     wire [3:0] ghr_val;
     wire [3:0] index;
-    reg  [1:0] bht [15:0];
-    wire [1:0] updated_counter;
-    wire prediction_bit;
+    wire [1:0] counter_val;
 
     // GHR logic
     ghr ghr_inst (
@@ -28,24 +26,16 @@ module gselect (
         .index(index)
     );
 
-    // Decode prediction
-    prediction_decoder decode (
-        .counter(bht[index]),
-        .prediction(prediction_bit)
-    );
-
-    assign prediction = prediction_bit;
-
-    // Update counter on posedge clk
-    saturating_counter_updater updater (
-        .current_val(bht[index]),
+    // BHT access and update
+    bht bht_inst (
+        .clk(clk),
+        .reset(reset),
+        .predict_enable(predict_enable),
+        .index(index),
         .actual_outcome(actual_outcome),
-        .updated_val(updated_counter)
+        .prediction(prediction),
+        .counter_val(counter_val)
     );
-
-    always @(posedge clk) begin
-        if (predict_enable)
-            bht[index] <= updated_counter;
-    end
+    
 endmodule
 

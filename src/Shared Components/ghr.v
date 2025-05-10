@@ -10,4 +10,4 @@ module ghr (
         else
             ghr_val <= {ghr_val[2:0], branch_outcome};  // Shift left and insert new outcome
     end
-endmodule
+endmodule 
