@@ -1,0 +1,58 @@
+	
+
+
+
+ECE 586 Final Project Report
+
+
+Group Members:
+ Paul Henderson and Bryan Evans
+
+	Instructor: Professor
+Class: ECE 586 Advanced Computer Architecture and Hardware Security
+TAs: 
+Due Date: May 10th, 2025
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Contents:
+Abstract
+Introduction
+Background
+Architectural Exploration
+Functional Validation
+Results
+Conclusion
+Appendix
+References
+
+Abstract
+This r
+Introduction
+Smart plugs
+Background
+Th
+Architectural Exploration
+
+
+Functional Validation
+T
+Results
+Conclusion
+
+Appendix
+
+References
+[1] 
