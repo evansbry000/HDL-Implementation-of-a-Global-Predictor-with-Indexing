@@ -1,0 +1,15 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  \
+"../../../../../../src/Shared Components/PredictionDecoder.v" \
+"../../../../../../src/Shared Components/SaturatingCounterUpdater.v" \
+"../../../../../../src/Shared Components/bht.v" \
+"../../../../../../src/Shared Components/ghr.v" \
+"../../../../../../src/gpredict.v" \
+"../../../../../../src/gpredict_index.v" \
+"../../../../../tb_gpredict.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

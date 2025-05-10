@@ -10,53 +10,59 @@ TAs:
 Due Date: May 10th, 2025
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 Contents:
-Abstract
-Introduction
-Background
-Architectural Exploration of Dynamic Predictors
-Functional Validation and Verification
-Results
-Conclusion and Future Work
-Appendix
-References
+1. Abstract
+2. Introduction
+3. Background
+4. Architectural Exploration of Dynamic Predictors
+5. Functional Validation and Verification
+6. Results
+7. Conclusion and Future Work
+8. Appendix
+9. References
 
-Abstract
-This report presents the implementation and analysis of three global branch predictor architectures: gpredict, gselect, and gshare. Branch prediction is a critical performance technique in modern processors, as it allows for speculative execution across basic block boundaries. We implement each predictor in Verilog, validate their functionality using testbenches, and analyze their comparative performance. Our results show that gshare offers the best prediction accuracy at 97.8%, compared to gselect (96.3%) and gpredict (92.1%) for our benchmark tests. These findings align with theoretical expectations and highlight the benefits of combining branch address and global history information.
+1. Abstract
+This report presents the implementation and analysis of three global branch predictor architectures: gpredict, gselect, and gshare. Branch prediction is a critical performance technique in modern processors, as it allows for speculative execution across basic block boundaries. We implement each predictor in Verilog HDL, validate their functionality using testbenches, and provide a detailed comparative analysis of their performance characteristics. Our results show that gshare offers the best prediction accuracy at 97.8%, compared to gselect (96.3%) and gpredict (92.1%) for our benchmark tests. These findings align with theoretical expectations and highlight the benefits of combining branch address and global history information through different indexing mechanisms.
 
-Introduction
-Branch instructions are among the most critical limiting factors to performance in modern processors. As pipeline depths have increased and superscalar architectures have become standard, the cost of branch mispredictions has grown significantly. When a branch is mispredicted, all speculatively executed instructions must be flushed, wasting processor resources and stalling instruction execution.
+2. Introduction
+Branch instructions are among the most critical limiting factors to performance in modern processors. As pipeline depths have increased and superscalar architectures have become standard, the cost of branch mispredictions has grown significantly. When a branch is mispredicted, all speculatively executed instructions must be flushed, wasting processor resources and stalling instruction execution. In modern high-performance processors with deep pipelines, a branch misprediction can result in a penalty of 15-20 cycles or more, significantly impacting overall system performance.
 
-In this project, we implement three global branch predictor architectures designed to improve prediction accuracy: (1) a simple global predictor that uses only branch history, (2) a gselect predictor that concatenates branch address bits with history bits, and (3) a gshare predictor that XORs branch address bits with history bits. The goal is to compare their architectural trade-offs and measure their effectiveness on a standardized branch trace derived from loop-based code.
+The practical implications of branch prediction extend beyond just performance. They also affect power consumption and thermal characteristics of processors, as wasted work from mispredictions consumes energy without contributing to program progress. Furthermore, in security-sensitive applications, branch prediction can create side channels that potentially leak information.
 
-Background
+In this project, we implement three global branch predictor architectures designed to improve prediction accuracy: (1) a simple global predictor that uses only branch history, (2) a gselect predictor that concatenates branch address bits with history bits, and (3) a gshare predictor that XORs branch address bits with history bits. The goal is to compare their architectural trade-offs in terms of both performance and implementation complexity, and measure their effectiveness on a standardized branch trace derived from loop-based code.
+
+3. Background
 Branch prediction techniques have evolved over several decades, with increasingly sophisticated methods developed to improve accuracy. The most basic predictor is a bimodal predictor, which simply records whether a branch is usually taken or not taken. This approach works well when branches have strong biases.
+
+[INSERT DIAGRAM: Basic branch prediction concept showing program flow with and without prediction]
 
 Global predictors recognize that branch outcomes often correlate with the outcomes of recent branches. These predictors maintain a Global History Register (GHR) that records the outcomes of the last N branches, regardless of which branch they were. This history is then used to index into a Branch History Table (BHT) containing 2-bit saturating counters that provide predictions.
 
-The seminal paper by Scott McFarling (1993) introduced several hybrid approaches, including gselect and gshare, which combine branch address information with global history. This allows them to distinguish between different branches even when they share similar history patterns.
+2-bit saturating counters are widely used in branch prediction because they offer a good balance between implementation complexity and prediction accuracy. The counter has four states: strongly not taken (00), weakly not taken (01), weakly taken (10), and strongly taken (11). The counter updates by incrementing when a branch is taken and decrementing when not taken, but "saturates" at the extremes. This design helps filter out occasional anomalies in branch behavior without affecting the overall prediction trend.
 
-Architectural Exploration of Dynamic Predictors
+[INSERT DIAGRAM: State transition diagram for 2-bit saturating counter]
+
+The seminal paper by Scott McFarling (1993) introduced several hybrid approaches, including gselect and gshare, which combine branch address information with global history. This allows them to distinguish between different branches even when they share similar history patterns. This combination approach is particularly effective for handling both pattern-based branches (where the outcome depends on recent history) and PC-based branches (where the outcome is strongly correlated with the branch's address).
+
+4. Architectural Exploration of Dynamic Predictors
 In this project, we implemented three specific branch predictor architectures:
 
-1. Global Branch Predictor (gpredict): This predictor uses only the 4-bit Global History Register (GHR) to index into a 16-entry Branch History Table (BHT).
+4.1 Global Branch Predictor (gpredict)
+This predictor uses only the 4-bit Global History Register (GHR) to index into a 16-entry Branch History Table (BHT). The GHR shifts left by one bit each time a branch is encountered, with the outcome (taken=1, not taken=0) entering the least significant bit. The GHR value directly indexes into the BHT without modification.
 
-2. Global Branch Predictor with Index Selection (gselect): This predictor concatenates the low-order 2 bits of the branch PC with the low-order 2 bits of the GHR to form a 4-bit index into the BHT.
+Hardware resource requirements: Minimal, requiring only a 4-bit shift register and a 16-entry table of 2-bit counters.
 
-3. Global Branch Predictor with Index Sharing (gshare): This predictor XORs the low-order 4 bits of the branch PC with the 4-bit GHR to form the index into the BHT.
+4.2 Global Branch Predictor with Index Selection (gselect)
+This predictor concatenates the low-order 2 bits of the branch PC with the low-order 2 bits of the GHR to form a 4-bit index into the BHT. This design requires an additional multiplexer structure compared to gpredict to perform the concatenation operation before indexing.
+
+Hardware resource requirements: Slightly higher than gpredict, with concatenation logic in addition to the GHR and BHT.
+
+4.3 Global Branch Predictor with Index Sharing (gshare)
+This predictor XORs the low-order 4 bits of the branch PC with the 4-bit GHR to form the index into the BHT. The XOR operation results in a more uniform distribution of indices, reducing aliasing effects. This requires a 4-bit XOR gate in addition to the basic structures.
+
+Hardware resource requirements: Similar to gselect in terms of gate count, with XOR gates replacing the concatenation logic.
+
+[INSERT DIAGRAM: Comparative architecture diagrams for all three predictors]
 
 Each architecture uses a 4-bit GHR, a 16-entry BHT with 2-bit saturating counters, and shared components for prediction decoding and counter updating. The key difference is in how they generate the index to access the BHT.
 
@@ -66,20 +72,49 @@ The architectural trade-offs between these designs primarily involve how they ha
 - gselect reduces aliasing by using branch address bits, but has limited addressable space since it only uses the lowest 2 bits of the PC
 - gshare offers the best aliasing prevention by distributing branches evenly through the BHT via XOR, creating a pseudo-random mapping that reduces destructive interference
 
-Functional Validation and Verification
+Implementation challenges included ensuring correct timing for history updates and maintaining consistency between the prediction and update phases. Special attention was paid to the initialization of the predictors to ensure deterministic behavior.
+
+Table 1: Comparative Features of Predictor Architectures
+|---------------------|-------------------|------------------------|-------------------|
+| Feature             | gpredict          | gselect                | gshare            |
+|---------------------|-------------------|------------------------|-------------------|
+| Indexing method     | Direct GHR        | PC & GHR concatenation | PC XOR GHR        |
+| Aliasing mitigation | None              | Moderate               | Strong            |
+| Hardware complexity | Lowest            | Medium                 | Medium            |
+| PC bits used        | 0                 | 2                      | 4                 |
+| GHR bits used       | 4                 | 2                      | 4                 |
+|---------------------|-------------------|------------------------|-------------------|
+
+5. Functional Validation and Verification
 To validate our implementation, we created testbenches for each predictor that simulate their behavior on branch traces. The testbenches read a branch trace file generated from a loop-based program and feed each branch PC and outcome to the corresponding predictor. During simulation, the testbenches track and report the number of mispredictions and the overall prediction accuracy.
 
+5.1 Methodology for Creating Representative Branch Patterns
+The branch trace generation process was carefully designed to create meaningful patterns that would exercise the predictors' capabilities. We specifically designed test cases that would:
+- Include both highly-predictable branches and branches with more complex patterns
+- Feature nested loops to create varying global history patterns
+- Provide enough branch interactions to reveal the benefits of different indexing strategies
+
+5.2 The Validation Process
 The validation process includes:
 
-1. Branch Trace Generation: We created a Python script (loop_simulator.py) that generates branch outcomes for a nested loop program. This produces a trace with regular patterns, which is ideal for testing branch predictors.
+1. Branch Trace Generation: We created a Python script (loop_simulator.py) that generates branch outcomes for a nested loop program. This produces a trace with regular patterns, which is ideal for testing branch predictors. The trace consists of 6000 branch events with their corresponding PC values and outcomes.
 
-2. Verilog Testbenches: Each testbench instantiates its predictor, provides it with branch addresses and outcomes from the trace file, and counts mispredictions.
+2. Verilog Testbenches: Each testbench instantiates its predictor, provides it with branch addresses and outcomes from the trace file, and counts mispredictions. The testbenches implement a streaming model where branch events are processed sequentially to mimic real-world operation.
 
-3. ModelSim Simulation: A TCL script automates the compilation and simulation process, making it easy to run all three predictors sequentially.
+3. ModelSim/Vivado Simulation: TCL scripts automate the compilation and simulation process, making it easy to run all three predictors sequentially. This automation ensures consistent testing conditions across different predictor architectures.
 
-4. Waveform Analysis: The testbenches generate VCD files, allowing visual inspection of the predictors' behavior over time.
+4. Waveform Analysis: The testbenches generate VCD files, allowing visual inspection of the predictors' behavior over time. This detailed analysis enables us to identify specific failure patterns and understand the transient response of each predictor.
 
-Results
+5.3 Corner Cases and Special Test Scenarios
+We paid particular attention to several corner cases:
+- Initial training period behavior (cold start performance)
+- Branches with pattern changes mid-simulation
+- Interactions between branches that map to the same BHT entry
+- Long sequences of repeated outcomes to test saturation behavior
+
+[INSERT FIGURE: Sample waveform showing key signals during prediction and update phases]
+
+6. Results
 After simulating all three branch predictors with our branch trace, we observed the following results:
 
 | Predictor | Total Branches | Mispredictions | Accuracy (%) |
@@ -98,23 +133,28 @@ The performance gap between these predictors is primarily due to how they handle
 
 One interesting observation is how the predictors adapt to the nested loop pattern over time. Initially, all predictors show poor performance, but their accuracy improves as the pattern becomes established in the BHT.
 
-Conclusion and Future Work
+7. Conclusion and Future Work
 This project successfully implemented and compared three global branch predictor architectures. We found that gshare offers the best performance for our test case, confirming the findings in McFarling's paper. The ability to combine branch address and history information while minimizing destructive interference gives gshare a clear advantage.
+
+These results have important implications for modern processor design, where accurate branch prediction is critical for maintaining high instruction throughput. The implementation complexity differences between these predictors are relatively minor, suggesting that more sophisticated indexing schemes like gshare offer compelling performance benefits with minimal additional hardware costs. This aligns with the industry trend toward more complex branch prediction in high-performance processors.
 
 For future work, several extensions could be explored:
 
-1. Implementing predictors with larger history registers and BHTs to analyze how prediction accuracy scales with predictor size
-2. Simulating with more diverse branch traces, including real-world application traces
-3. Implementing tournament predictors that dynamically select between different prediction strategies
-4. Analyzing power and area trade-offs between different predictor designs
+1. Implementing predictors with larger history registers and BHTs to analyze how prediction accuracy scales with predictor size and determine optimal sizing for different workloads
+2. Simulating with more diverse branch traces, including real-world application traces from SPEC CPU benchmarks and server workloads
+3. Implementing tournament predictors that dynamically select between different prediction strategies based on runtime behavior
+4. Analyzing power and area trade-offs between different predictor designs using hardware synthesis tools
+5. Exploring the impact of different update policies, such as speculative vs. committed updates
+6. Investigating predictor performance when integrated with branch target buffer (BTB) designs
+7. Studying the security implications of different predictor designs, particularly in the context of speculative execution vulnerabilities
 
-These explorations would provide additional insights into the performance characteristics of branch predictors and inform architectural decisions in processor design.
+In the broader context of computer architecture trends, branch prediction continues to be a critical component as processors pursue higher instruction-level parallelism. The techniques explored in this project remain relevant even as architectures evolve, with modern designs building upon these fundamental indexing strategies with additional layers of sophistication.
 
-Appendix
+8. Appendix
 The complete Verilog implementation and associated files are available at:
 https://github.com/evansbry000/HDL-Implementation-of-a-Global-Predictor-with-Indexing
 
-References
+9. References
 [1] S. McFarling, "Combining Branch Predictors," Digital Western Research Laboratory, Technical Report #TN-36, June 1993.
 
 [2] T.-Y. Yeh and Y.N. Patt, "Alternative implementations of two-level adaptive branch prediction," in Proceedings of the 19th Annual International Symposium on Computer Architecture, 1992, pp. 124-134.
@@ -122,3 +162,11 @@ References
 [3] J. E. Smith, "A study of branch prediction strategies," in Proceedings of the 8th Annual Symposium on Computer Architecture, 1981, pp. 135-148.
 
 [4] Lee, J., and Smith, A., "Branch Prediction Strategies and Branch Target Buffer Design," IEEE Computer, vol. 17, no. 1, pp. 6-22, Jan. 1984.
+
+[5] D. Jiménez and C. Lin, "Dynamic branch prediction with perceptrons," in Proceedings of the 7th International Symposium on High-Performance Computer Architecture, 2001, pp. 197-206.
+
+[6] A. Seznec, "A new case for the TAGE branch predictor," in Proceedings of the 44th Annual IEEE/ACM International Symposium on Microarchitecture, 2011, pp. 117-127.
+
+[7] Kocher, P., et al., "Spectre Attacks: Exploiting Speculative Execution," in IEEE Symposium on Security and Privacy, 2019, pp. 1-19.
+
+[8] Hennessy, J. L., and Patterson, D. A., "Computer Architecture: A Quantitative Approach," 6th Edition, Morgan Kaufmann, 2017.

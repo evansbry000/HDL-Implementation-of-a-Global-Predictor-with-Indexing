@@ -1,0 +1,40 @@
+#-----------------------------------------------------------
+# Vivado v2024.2 (64-bit)
+# SW Build 5239630 on Fri Nov 08 22:35:27 MST 2024
+# IP Build 5239520 on Sun Nov 10 16:12:51 MST 2024
+# SharedData Build 5239561 on Fri Nov 08 14:39:27 MST 2024
+# Start of session at: Sat May 10 16:04:46 2025
+# Process ID         : 2252
+# Current directory  : C:/Users/bryan/Desktop/ECE586 Final Project/HDL-Implementation-of-a-Global-Predictor-with-Indexing/sim
+# Command line       : vivado.exe -mode tcl -source run_vivado_sim.tcl
+# Log file           : C:/Users/bryan/Desktop/ECE586 Final Project/HDL-Implementation-of-a-Global-Predictor-with-Indexing/sim/vivado.log
+# Journal file       : C:/Users/bryan/Desktop/ECE586 Final Project/HDL-Implementation-of-a-Global-Predictor-with-Indexing/sim\vivado.jou
+# Running On         : DESKTOP-BA2175S
+# Platform           : Windows Server 2016 or Windows 10
+# Operating System   : 19045
+# Processor Detail   : 11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz
+# CPU Frequency      : 2304 MHz
+# CPU Physical cores : 8
+# CPU Logical cores  : 16
+# Host memory        : 16909 MB
+# Swap memory        : 9126 MB
+# Total Virtual      : 26035 MB
+# Available Virtual  : 5826 MB
+#-----------------------------------------------------------
+source run_vivado_sim.tcl
+# set project_directory [file normalize [file dirname [info script]]]
+# set project_name "BranchPredictors"
+# set short_proj_dir [file join $project_directory $project_name]
+# file mkdir $short_proj_dir
+# create_project -force $project_name $short_proj_dir -part xc7a35tcpg236-1
+INFO: [ProjectBase 1-489] The host OS only allows 260 characters in a normal path. The project is stored in a path with more than 80 characters. If you experience issues with IP, Block Designs, or files not being found, please consider moving the project to a location with a shorter path. Alternately consider using the OS subst command to map part of the path to a drive letter.
+Current project path is 'C:/Users/bryan/Desktop/ECE586 Final Project/HDL-Implementation-of-a-Global-Predictor-with-Indexing/sim/BranchPredictors'
+# set trace_file [file join $project_directory "branch_trace.txt"]
+# if {![file exists $trace_file]} {
+#     puts "Generating branch trace using Python script..."
+#     set script_file [file join $project_directory "loop_simulator.py"]
+#     exec python $script_file
+# }
+# add_files -fileset sim_1 $trace_file
+ERROR: [Vivado 12-172] File or Directory 'C:/Users/bryan/Desktop/ECE586' does not exist
+Vivado% 
